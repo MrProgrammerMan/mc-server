@@ -49,7 +49,7 @@ in {
     after = [ "network.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = [ "${backupMinecraft}" ];
+      ExecStart = [ "${backupMinecraft}/bin/backup-minecraft-server" ];
       User = "root";
     };
   };

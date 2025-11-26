@@ -5,7 +5,7 @@ let
     set -euo pipefail
 
     BACKUP_DIR="/var/lib/minecraft"
-    DEST="remote:mc-backup"
+    DEST="mc-backup:/backups"
     TIMESTAMP=$(${pkgs.coreutils}/bin/date +"%Y-%m-%d_%H-%M-%S")
     TMP_BACKUP="/tmp/minecraft-backup-$TIMESTAMP.tar.gz"
 
@@ -41,8 +41,8 @@ in {
       white-list = true;
       max-players = 4;
     };
+    openFirewall = true;
   };
-  services.minecraft-server.openFirewall = true;
   nixpkgs.config.allowUnfree = true;
 
   systemd.services.backup-minecraft-server = {

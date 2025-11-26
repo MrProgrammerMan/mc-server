@@ -12,7 +12,7 @@ let
     trap '${pkgs.systemd}/bin/systemctl start minecraft-server; ${pkgs.coreutils}/bin/rm -f "$TMP_BACKUP"' EXIT
 
     ${pkgs.systemd}/bin/systemctl stop minecraft-server
-    ${pkgs.gnutar}/bin/tar -czf "$TMP_BACKUP" -C "$BACKUP_DIR" .
+    ${pkgs.gnutar}/bin/tar -I ${pkgs.gzip}/bin/gzip -cf "$TMP_BACKUP" -C "$BACKUP_DIR" .
     ${pkgs.systemd}/bin/systemctl start minecraft-server
     ${pkgs.rclone}/bin/rclone copy "$TMP_BACKUP" "$DEST"
   '';

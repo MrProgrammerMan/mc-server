@@ -1,4 +1,22 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  backupMinecraft = pkgs.writeShellScriptBin "backup-minecraft-server" ''
+    #!${pkgs.bash}/bin/bash
+    set -euo pipefail
+
+    BACKUP_DIR="/var/lib/minecraft"
+    DEST="remote:mc-backup"
+    TIMESTAMP=$(${pkgs.coreutils}/bin/date +"%Y-%m-%d_%H-%M-%S")
+    TMP_BACKUP="/tmp/minecraft-backup-$TIMESTAMP.tar.gz"
+
+    trap '${pkgs.systemd}/bin/systemctl start minecraft-server; ${pkgs.coreutils}/bin/rm -f "$TMP_BACKUP"' EXIT
+
+    ${pkgs.systemd}/bin/systemctl stop minecraft-server
+    ${pkgs.gnutar}/bin/tar -czf "$TMP_BACKUP" -C "$BACKUP_DIR" .
+    ${pkgs.systemd}/bin/systemctl start minecraft-server
+    ${pkgs.rclone}/bin/rclone copy "$TMP_BACKUP" "$DEST"
+  '';
+in {
   environment.systemPackages = [ pkgs.git pkgs.rclone ];
 
   services.openssh = {
@@ -31,7 +49,7 @@
     after = [ "network.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = [ "${pkgs.bash}/bin/bash" "${./backup-minecraft-server.sh}" ];
+      ExecStart = [ "${backupMinecraft}" ];
       User = "root";
     };
   };

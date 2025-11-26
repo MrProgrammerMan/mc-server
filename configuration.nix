@@ -55,6 +55,7 @@
     enable = true;
     flake = "github:MrProgrammerMan/mc-server";
     dates = "05:00";
+    upgrade = false;
   };
 
   users.users.local = {

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 BACKUP_DIR="/var/lib/minecraft"
-DEST="remote:mc-backups"
+DEST="remote:mc-backup"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 TMP_BACKUP="/tmp/minecraft-backup-$TIMESTAMP.tar.gz"
 

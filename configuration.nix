@@ -1,7 +1,5 @@
-{ config, lib, pkgs, ... }:
-
-{
-  environment.systemPackages = [ pkgs.git ];
+{ config, lib, pkgs, ... }: {
+  environment.systemPackages = [ pkgs.git pkgs.rclone ];
 
   services.openssh = {
     enable = true;
@@ -22,6 +20,23 @@
   };
   services.minecraft-server.openFirewall = true;
   nixpkgs.config.allowUnfree = true;
+
+  systemd.services.backup-minecraft-server = {
+    after = [ "network.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = [ "${pkgs.bash}/bin/bash" "${./backup-minecraft-server.sh}" ];
+      User = "root";
+    };
+  };
+
+  systemd.timers.backup-minecraft-server-timer = {
+    timerConfig = {
+      OnCalendar = "Mon,Thu *-*-* 04:00:00";
+      Persistent = true;
+    };
+    wantedBy = [ "timers.target" ];
+  };
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";

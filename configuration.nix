@@ -17,6 +17,12 @@
       Mr_J420 = "4efaa620-7b3b-41a7-97bd-b57d06dcf2ac";
       Danish_Croissant = "69ee5f49-33b3-4995-b631-4e591bab2787";
     };
+    serverProperties = {
+      server-port = 25565;
+      difficulty = 3;
+      white-list = true;
+      max-players = 4;
+    };
   };
   services.minecraft-server.openFirewall = true;
   nixpkgs.config.allowUnfree = true;

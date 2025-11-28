@@ -54,7 +54,7 @@ in {
     };
   };
 
-  systemd.timers.backup-minecraft-server-timer = {
+  systemd.timers.backup-minecraft-server = {
     timerConfig = {
       OnCalendar = "Mon,Thu *-*-* 04:00:00";
       Persistent = true;

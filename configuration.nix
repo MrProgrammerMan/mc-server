@@ -35,6 +35,7 @@ in {
       Mr_J420 = "4efaa620-7b3b-41a7-97bd-b57d06dcf2ac";
       Danish_Croissant = "69ee5f49-33b3-4995-b631-4e591bab2787";
       CrazyHamsta1337 = "14d1d08d-474c-4631-8998-12da75e97f08";
+      faceman151 = "405b25cd-d8d7-4298-86c7-3f5470c4d784";
     };
     serverProperties = {
       server-port = 25565;
